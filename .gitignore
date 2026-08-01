@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+inspect_messages.txt
+predictions_review.txt
+media_contact_sheet.jpg
+output.csv

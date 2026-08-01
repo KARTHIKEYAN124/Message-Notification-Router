@@ -1,111 +1,111 @@
 message_id,action,message_type,reason,confidence,evidence_message_ids
-msg_023,,,,,
-msg_091,,,,,
-msg_090,,,,,
-msg_048,,,,,
-msg_040,,,,,
-msg_075,,,,,
-msg_005,,,,,
-msg_104,,,,,
-msg_069,,,,,
-msg_107,,,,,
-msg_070,,,,,
-msg_003,,,,,
-msg_099,,,,,
-msg_008,,,,,
-msg_092,,,,,
-msg_060,,,,,
-msg_004,,,,,
-msg_030,,,,,
-msg_045,,,,,
-msg_052,,,,,
-msg_009,,,,,
-msg_071,,,,,
-msg_016,,,,,
-msg_065,,,,,
-msg_038,,,,,
-msg_086,,,,,
-msg_014,,,,,
-msg_094,,,,,
-msg_029,,,,,
-msg_105,,,,,
-msg_002,,,,,
-msg_010,,,,,
-msg_078,,,,,
-msg_013,,,,,
-msg_018,,,,,
-msg_044,,,,,
-msg_032,,,,,
-msg_106,,,,,
-msg_006,,,,,
-msg_109,,,,,
-msg_108,,,,,
-msg_019,,,,,
-msg_088,,,,,
-msg_056,,,,,
-msg_027,,,,,
-msg_050,,,,,
-msg_083,,,,,
-msg_063,,,,,
-msg_033,,,,,
-msg_061,,,,,
-msg_020,,,,,
-msg_017,,,,,
-msg_058,,,,,
-msg_026,,,,,
-msg_047,,,,,
-msg_046,,,,,
-msg_042,,,,,
-msg_079,,,,,
-msg_098,,,,,
-msg_037,,,,,
-msg_007,,,,,
-msg_085,,,,,
-msg_001,,,,,
-msg_021,,,,,
-msg_028,,,,,
-msg_012,,,,,
-msg_064,,,,,
-msg_103,,,,,
-msg_031,,,,,
-msg_057,,,,,
-msg_087,,,,,
-msg_067,,,,,
-msg_039,,,,,
-msg_082,,,,,
-msg_066,,,,,
-msg_049,,,,,
-msg_015,,,,,
-msg_051,,,,,
-msg_097,,,,,
-msg_089,,,,,
-msg_053,,,,,
-msg_059,,,,,
-msg_024,,,,,
-msg_072,,,,,
-msg_036,,,,,
-msg_076,,,,,
-msg_055,,,,,
-msg_102,,,,,
-msg_080,,,,,
-msg_093,,,,,
-msg_034,,,,,
-msg_035,,,,,
-msg_101,,,,,
-msg_041,,,,,
-msg_011,,,,,
-msg_110,,,,,
-msg_095,,,,,
-msg_074,,,,,
-msg_073,,,,,
-msg_054,,,,,
-msg_068,,,,,
-msg_100,,,,,
-msg_062,,,,,
-msg_096,,,,,
-msg_043,,,,,
-msg_077,,,,,
-msg_081,,,,,
-msg_025,,,,,
-msg_084,,,,,
-msg_022,,,,,
+msg_023,notify,payment,A trusted source sent a same-day payment or account update likely to need attention.,0.87,message_0243;message_0263
+msg_091,mute,scam,The message asks for sensitive verification details through a risky or unfamiliar flow.,0.88,message_0238;message_0381
+msg_090,mute,personal,"Similar promotional or resale messages were ignored, dismissed, or look risky for this user.",0.83,message_0173;message_0092
+msg_048,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0151;message_0152
+msg_040,mute,greeting,Repeated forwarded greetings or chain-style messages are low value for this user.,0.84,message_0136;message_0135
+msg_075,notify,event,A trusted sender shared a same-day operational update or schedule change.,0.87,message_0206;message_0205
+msg_005,digest,promotion,A known resale contact asks for a same-day pickup decision.,0.84,message_0401;message_0065
+msg_104,mute,promotion,"Similar resale messages were ignored, dismissed, or muted by this user.",0.85,message_0224;message_0050
+msg_069,mute,greeting,Repeated forwarded greetings or chain-style messages are low value for this user.,0.84,message_0193;message_0194
+msg_107,mute,scam,The message tries to influence the router while asking for sensitive verification details.,0.88,message_0173;message_0174
+msg_070,mute,scam,The message asks for sensitive verification details through a risky or unfamiliar flow.,0.88,message_0173;message_0174
+msg_003,notify,business_update,A verified business is sending an order update that matches the user's recent history.,0.91,message_0031;message_0400
+msg_099,digest,event,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0227;message_0249
+msg_008,digest,business_update,"A verified business is asking for feedback, which is legitimate but non-urgent.",0.78,message_0072;message_0071
+msg_092,digest,payment,The message explicitly says it is not urgent and can be read later.,0.80,message_0346;message_0344
+msg_060,notify,event,An official academic deadline closes today and should interrupt the user.,0.88,message_0404;message_0284
+msg_004,notify,event,A trusted personal message contains a time-sensitive health or document action.,0.87,message_0245;message_0005
+msg_030,mute,promotion,"Similar resale messages were ignored, dismissed, or muted by this user.",0.85,message_0115;message_0335
+msg_045,digest,promotion,"The message is promotional and safe, so it can wait for a digest.",0.80,message_0146;message_0145
+msg_052,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0208;message_0207
+msg_009,digest,personal,"The sender is trusted, but there is no immediate action or safety issue.",0.80,message_0074;message_0073
+msg_071,digest,personal,"The sender is trusted, but there is no immediate action or safety issue.",0.80,message_0197;message_0198
+msg_016,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0024;message_0087
+msg_065,digest,promotion,The promotion matches an opted-in business relationship but does not need interruption.,0.78,message_0261;message_0185
+msg_038,mute,forward,Repeated forwarded greetings or chain-style messages are low value for this user.,0.84,message_0131;message_0132
+msg_086,mute,business_update,The business sender or domain looks untrusted for this account update.,0.82,message_0034;message_0112
+msg_014,mute,promotion,"Similar promotional or resale messages were ignored, dismissed, or look risky for this user.",0.83,message_0017;message_0084
+msg_094,mute,promotion,The user has no recent relationship with this promotional business sender.,0.81,message_0356;message_0048
+msg_029,mute,promotion,"Similar resale messages were ignored, dismissed, or muted by this user.",0.85,message_0401;message_0095
+msg_105,mute,forward,Forwarded health advice is repetitive or unsafe and should not interrupt the user.,0.84,message_0233;message_0373
+msg_002,notify,urgent,The sender directly asks for timely action or help in a trusted context.,0.87,message_0169;message_0003
+msg_010,digest,business_update,"A verified business is asking for feedback, which is legitimate but non-urgent.",0.78,message_0011;message_0242
+msg_078,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0211;message_0212
+msg_013,digest,promotion,"The message is promotional and safe, so it can wait for a digest.",0.80,message_0081;message_0082
+msg_018,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0092;message_0091
+msg_044,mute,scam,The message asks for sensitive verification details through a risky or unfamiliar flow.,0.88,message_0143;message_0144
+msg_032,digest,event,The message explicitly says it is not urgent and can be read later.,0.80,message_0119;message_0285
+msg_106,digest,event,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0234;message_0376
+msg_006,notify,payment,A trusted source sent a same-day payment or account update likely to need attention.,0.87,message_0029;message_0067
+msg_109,mute,scam,The message tries to influence the router while asking for sensitive verification details.,0.88,message_0151;message_0152
+msg_108,mute,scam,The message asks for sensitive verification details through a risky or unfamiliar flow.,0.88,message_0094;message_0093
+msg_019,mute,promotion,The user has no recent relationship with this promotional business sender.,0.81,message_0094;message_0093
+msg_088,digest,event,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0390;message_0115
+msg_056,notify,event,A trusted personal message contains a time-sensitive health or document action.,0.87,message_0167;message_0168
+msg_027,digest,promotion,The promotion matches an opted-in business relationship but does not need interruption.,0.78,message_0272;message_0033
+msg_050,notify,event,A trusted personal message contains a time-sensitive health or document action.,0.86,message_0279;message_0155
+msg_083,notify,urgent,A work voice note appears to need timely attention.,0.87,message_0219;message_0249
+msg_063,digest,payment,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0182;message_0181
+msg_033,digest,greeting,"The message is safe and potentially useful, but can be reviewed later.",0.78,message_0121;message_0122
+msg_061,mute,greeting,Repeated forwarded greetings or chain-style messages are low value for this user.,0.84,message_0193;message_0194
+msg_020,digest,urgent,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0114;message_0095
+msg_017,digest,urgent,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0090;message_0089
+msg_058,mute,forward,Forwarded health advice is repetitive or unsafe and should not interrupt the user.,0.84,message_0078;message_0172
+msg_026,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0032;message_0107
+msg_047,notify,payment,A trusted source sent a same-day payment or account update likely to need attention.,0.87,message_0150;message_0149
+msg_046,mute,scam,The message asks for sensitive verification details through a risky or unfamiliar flow.,0.88,message_0148;message_0147
+msg_042,notify,urgent,A trusted society notice contains an immediate practical action.,0.88,message_0140;message_0139
+msg_079,mute,scam,The message asks for sensitive verification details through a risky or unfamiliar flow.,0.88,message_0173;message_0174
+msg_098,notify,event,A trusted personal message contains a time-sensitive health or document action.,0.87,message_0226;message_0359
+msg_037,digest,personal,"The sender is trusted, but there is no immediate action or safety issue.",0.80,message_0130;message_0269
+msg_007,digest,event,The group update is useful but does not require immediate interruption.,0.81,message_0070;message_0069
+msg_085,digest,event,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0221;message_0214
+msg_001,notify,urgent,A trusted society notice contains an immediate practical action.,0.88,message_0057;message_0240
+msg_021,notify,payment,A trusted source sent a same-day payment or account update likely to need attention.,0.87,message_0130;message_0190
+msg_028,mute,promotion,"Similar promotional or resale messages were ignored, dismissed, or look risky for this user.",0.83,message_0034;message_0112
+msg_012,mute,forward,Forwarded health advice is repetitive or unsafe and should not interrupt the user.,0.84,message_0247;message_0079
+msg_064,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0087;message_0183
+msg_103,notify,promotion,A known resale contact asks for a same-day pickup decision.,0.84,message_0065;message_0382
+msg_031,notify,event,A trusted sender shared a same-day operational update or schedule change.,0.87,message_0397;message_0249
+msg_057,notify,urgent,The sender directly asks for timely action or help in a trusted context.,0.87,message_0169;message_0059
+msg_087,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0203;message_0223
+msg_067,notify,payment,A trusted source sent a same-day payment or account update likely to need attention.,0.87,message_0068;message_0098
+msg_039,notify,event,A school admin sent a time-sensitive operational update for the user.,0.87,message_0051;message_0255
+msg_082,notify,urgent,A work voice note appears to need timely attention.,0.87,message_0397;message_0218
+msg_066,mute,promotion,"Similar promotional or resale messages were ignored, dismissed, or look risky for this user.",0.83,message_0402;message_0188
+msg_049,notify,business_update,A verified business is sending an order update that matches the user's recent history.,0.91,message_0154;message_0291
+msg_015,mute,scam,The message asks for sensitive verification details through a risky or unfamiliar flow.,0.88,message_0173;message_0174
+msg_051,mute,promotion,"Similar promotional or resale messages were ignored, dismissed, or look risky for this user.",0.83,message_0257;message_0103
+msg_097,digest,personal,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0054;message_0225
+msg_089,digest,urgent,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0299;message_0396
+msg_053,digest,personal,"The sender is trusted, but there is no immediate action or safety issue.",0.80,message_0411;message_0161
+msg_059,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0173;message_0174
+msg_024,mute,promotion,"Similar promotional or resale messages were ignored, dismissed, or look risky for this user.",0.83,message_0257;message_0103
+msg_072,mute,scam,The message asks for sensitive verification details through a risky or unfamiliar flow.,0.88,message_0173;message_0085
+msg_036,digest,payment,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0283;message_0127
+msg_076,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0208;message_0207
+msg_055,notify,urgent,The sender directly asks for timely action or help in a trusted context.,0.87,message_0166;message_0165
+msg_102,notify,urgent,The sender directly asks for timely action or help in a trusted context.,0.87,message_0371;message_0230
+msg_080,notify,urgent,A trusted society notice contains an immediate practical action.,0.88,message_0130;message_0190
+msg_093,notify,business_update,A verified delivery business sent a same-day pickup update with no payment or OTP request.,0.88,message_0349;message_0348
+msg_034,mute,greeting,Repeated forwarded greetings or chain-style messages are low value for this user.,0.84,message_0013;message_0077
+msg_035,digest,business_update,A legitimate business update can be reviewed later.,0.79,message_0281;message_0125
+msg_101,digest,personal,"The sender is trusted, but there is no immediate action or safety issue.",0.80,message_0370;message_0229
+msg_041,digest,urgent,"The update may be useful, but the sender context is not strong enough to interrupt.",0.76,message_0138;message_0137
+msg_011,mute,greeting,Repeated forwarded greetings or chain-style messages are low value for this user.,0.84,message_0077;message_0171
+msg_110,mute,scam,The message tries to influence the router while asking for sensitive verification details.,0.88,message_0238;message_0381
+msg_095,mute,scam,The message tries to influence the router while asking for sensitive verification details.,0.88,message_0087;message_0183
+msg_074,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0204;message_0203
+msg_073,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0087;message_0184
+msg_054,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0163;message_0164
+msg_068,digest,personal,The group update is useful but does not require immediate interruption.,0.81,message_0191;message_0192
+msg_100,notify,payment,A trusted source sent a same-day payment or account update likely to need attention.,0.87,message_0362;message_0228
+msg_062,digest,event,The group update is useful but does not require immediate interruption.,0.81,message_0410;message_0043
+msg_096,digest,unknown,"The sender is unfamiliar, but the message is benign and not urgent.",0.78,message_0353;message_0405
+msg_043,notify,urgent,A trusted society notice contains an immediate practical action.,0.88,message_0130;message_0129
+msg_077,notify,event,A school admin sent a time-sensitive operational update for the user.,0.87,message_0403;message_0051
+msg_081,digest,personal,"The sender is trusted, but there is no immediate action or safety issue.",0.80,message_0217;message_0255
+msg_025,notify,business_update,A verified business is sending an order update that matches the user's recent history.,0.91,message_0239;message_0004
+msg_084,mute,promotion,"Similar promotional or resale messages were ignored, dismissed, or look risky for this user.",0.83,message_0220;message_0391
+msg_022,mute,scam,"The message applies payment pressure through a suspicious link, QR, or sender context.",0.88,message_0099;message_0151
