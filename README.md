@@ -101,11 +101,3 @@ As a sanity check, the router matches all labeled rows in `dataset/sample_messag
 │   └── media/
 └── problem_statement.md
 ```
-
-## Submission Files
-
-For HackerRank submission, use:
-
-- `dataset/output.csv` as the predictions CSV
-- the repository contents as the runnable code package
-- the transcript log requested in `AGENTS.md`
