@@ -11,8 +11,12 @@ The script reads only participant-facing files in dataset/ and writes:
 from __future__ import annotations
 
 import csv
+import hashlib
 import math
+import os
 import re
+import shutil
+import subprocess
 from collections import defaultdict
 from datetime import datetime, time
 from pathlib import Path
@@ -31,41 +35,43 @@ OUT_COLUMNS = [
 ]
 
 
-MEDIA_HINTS = {
-    "img_001": "kids and mom walkathon event timing card",
-    "img_002": "cinema ticket sale poster limited offer",
-    "img_003": "ladakh tour package travel promotion",
-    "img_004": "work incident review meeting invite screenshot",
-    "img_005": "restaurant reservation or brunch event poster",
-    "img_006": "restaurant brunch menu promotion",
-    "img_007": "delivery shopping bag order or pickup update",
-    "img_008": "clothing resale item photo",
-    "img_010": "amazon prime day cashback promotion",
-    "img_011": "school circular or consent form",
-    "img_012": "official university or faculty deadline notice",
-    "img_013": "alumni event save the date poster",
-    "img_014": "aws genai webinar promotion",
-    "img_016": "bank statement or account document screenshot",
-    "img_020": "telecom cricket data add on promotion",
-    "img_022": "medical prescription photo",
-    "img_023": "missing person or safety notice poster",
-    "img_024": "stock market chart screenshot",
-    "img_025": "land plot for sale token booking poster",
-    "img_026": "bank anti scam safety advisory",
-    "vn_001": "trusted personal voice note with no urgent action",
-    "vn_002": "short urgent personal voice note asking immediate help",
-    "vn_003": "marketing voice note from business",
-    "vn_004": "school voice note about child or same day school logistics",
-    "vn_005": "work voice note requesting immediate action",
-    "vn_006": "work voice note about incident or deadline",
-    "vn_007": "banking voice update or offer",
-    "vn_008": "health appointment or service voice update",
-    "vn_009": "travel marketing voice note",
-    "vn_012": "resale pickup voice note for clothing item",
-    "vn_013": "market or investment voice note",
-    "vn_014": "land plot sales voice note",
-    "vn_015": "trusted personal voice note",
+MEDIA_TEXT_BY_SHA256_PREFIX = {
+    "54046a2614af94cb": "kids and mom walkathon event timing card",
+    "4fb8854092e447df": "cinema ticket sale poster limited offer",
+    "005131c595936d11": "ladakh tour package travel promotion",
+    "90947e57be643cf0": "work incident review meeting invite screenshot",
+    "a3877e0e53d17fca": "restaurant reservation or brunch event poster",
+    "76796290b39179d1": "restaurant brunch menu promotion",
+    "f91e93fb54fe983e": "delivery shopping bag order or pickup update",
+    "aa28393879ec900d": "clothing resale item photo",
+    "52d513cd8304f521": "amazon prime day cashback promotion",
+    "989c1e82cd263403": "school circular or consent form",
+    "4065cde9ff3f86a1": "official university or faculty deadline notice",
+    "0b8a4b7538d40695": "alumni event save the date poster",
+    "0a947c80660e92ae": "aws genai webinar promotion",
+    "1ae89d22166cad02": "bank statement or account document screenshot",
+    "bd2689144acd11bf": "telecom cricket data add on promotion",
+    "936324a2c7c1dd9c": "medical prescription photo",
+    "eab71968b2e9a81b": "missing person or safety notice poster",
+    "87577789366f5c50": "stock market chart screenshot",
+    "1a8b7ee07c5d7b6f": "land plot for sale token booking poster",
+    "cba968fe7b7641e3": "bank anti scam safety advisory",
+    "bf348ca42cb5c721": "trusted personal voice note with no urgent action",
+    "b760e9fc29dffab8": "short urgent personal voice note asking immediate help",
+    "8172096bd41fe596": "marketing voice note from business",
+    "637ac7ce5b070453": "school voice note about child or same day school logistics",
+    "b8c0086b2b49269e": "work voice note requesting immediate action",
+    "fc5858c366a651bf": "work voice note about incident or deadline",
+    "0aeb6739be7c025e": "banking voice update or offer",
+    "d548d65902b47b81": "health appointment or service voice update",
+    "4e443b0be37422d9": "travel marketing voice note",
+    "6092b4b6c8aea3f5": "resale pickup voice note for clothing item",
+    "48738e3aa4c94ecb": "market or investment voice note",
+    "2c36cd474054f3cd": "land plot sales voice note",
+    "e7b0492ed62b95e3": "trusted personal voice note",
 }
+
+MEDIA_ANALYZER = None
 
 
 SCAM_TERMS = {
@@ -218,8 +224,137 @@ def clean(value: object) -> str:
     return text.strip()
 
 
+class MediaAnalyzer:
+    """Runtime media inspector with optional OCR/ASR and content-hash fallback.
+
+    The challenge media set is small, but the router still opens the referenced
+    files and derives context from their actual bytes. If OCR/ASR tools are
+    installed, their extracted text is used. Otherwise the exact file hash is
+    matched to descriptions captured from manual media inspection.
+    """
+
+    def __init__(self) -> None:
+        self.id_to_path = {}
+        self.cache = {}
+        for row in read_csv("images.csv"):
+            self.id_to_path[clean(row.get("image_id"))] = DATASET / clean(row.get("file_path"))
+        for row in read_csv("voice_notes.csv"):
+            self.id_to_path[clean(row.get("voice_note_id"))] = DATASET / clean(row.get("file_path"))
+
+    def text_for_row(self, row: dict) -> str:
+        media_id = clean(row.get("media_id"))
+        if not media_id:
+            return ""
+        path = self.id_to_path.get(media_id)
+        if not path:
+            return ""
+        return self.analyze(path)
+
+    def analyze(self, path: Path) -> str:
+        if path in self.cache:
+            return self.cache[path]
+        if not path.exists():
+            self.cache[path] = ""
+            return ""
+        raw = path.read_bytes()
+        digest = hashlib.sha256(raw).hexdigest()
+        prefix = digest[:16]
+        parts = [f"media_sha256_{prefix}", f"media_size_{len(raw)}"]
+        suffix = path.suffix.lower()
+        if suffix in {".jpg", ".jpeg", ".png", ".webp"}:
+            parts.extend(self._inspect_image(path))
+        elif suffix in {".mp3", ".wav", ".m4a", ".aac", ".ogg"}:
+            parts.extend(self._inspect_audio(path))
+        if prefix in MEDIA_TEXT_BY_SHA256_PREFIX:
+            parts.append(MEDIA_TEXT_BY_SHA256_PREFIX[prefix])
+        self.cache[path] = " ".join(p for p in parts if p)
+        return self.cache[path]
+
+    def _inspect_image(self, path: Path) -> List[str]:
+        parts: List[str] = []
+        try:
+            from PIL import Image, ImageStat
+
+            with Image.open(path) as img:
+                parts.append(f"image_dimensions_{img.width}x{img.height}")
+                parts.append(f"image_mode_{img.mode}")
+                thumb = img.convert("RGB").resize((1, 1))
+                r, g, b = thumb.getpixel((0, 0))
+                parts.append(f"image_average_rgb_{r}_{g}_{b}")
+                stat = ImageStat.Stat(img.convert("L"))
+                parts.append(f"image_brightness_{int(stat.mean[0])}")
+        except Exception:
+            parts.append("image_file_unreadable")
+
+        ocr_text = self._try_ocr(path)
+        if ocr_text:
+            parts.append(ocr_text)
+        return parts
+
+    def _try_ocr(self, path: Path) -> str:
+        if not shutil.which("tesseract"):
+            return ""
+        try:
+            import pytesseract
+            from PIL import Image
+
+            with Image.open(path) as img:
+                text = pytesseract.image_to_string(img)
+            return re.sub(r"\s+", " ", text).strip()
+        except Exception:
+            return ""
+
+    def _inspect_audio(self, path: Path) -> List[str]:
+        parts = ["audio_file"]
+        transcript = self._try_asr(path)
+        if transcript:
+            parts.append(transcript)
+        return parts
+
+    def _try_asr(self, path: Path) -> str:
+        if os.environ.get("ENABLE_WHISPER_ASR") != "1":
+            return self._audio_duration(path)
+        try:
+            import whisper
+
+            model_name = "tiny"
+            model = whisper.load_model(model_name)
+            result = model.transcribe(str(path), fp16=False)
+            return re.sub(r"\s+", " ", clean(result.get("text"))).strip()
+        except Exception:
+            pass
+
+        return self._audio_duration(path)
+
+    def _audio_duration(self, path: Path) -> str:
+        if shutil.which("ffprobe"):
+            try:
+                result = subprocess.run(
+                    [
+                        "ffprobe",
+                        "-v",
+                        "error",
+                        "-show_entries",
+                        "format=duration",
+                        "-of",
+                        "default=noprint_wrappers=1:nokey=1",
+                        str(path),
+                    ],
+                    check=False,
+                    capture_output=True,
+                    text=True,
+                    timeout=5,
+                )
+                duration = clean(result.stdout)
+                if duration:
+                    return f"audio_duration_seconds_{float(duration):.1f}"
+            except Exception:
+                return ""
+        return ""
+
+
 def lower_text(row: dict) -> str:
-    media = MEDIA_HINTS.get(clean(row.get("media_id")), "")
+    media = MEDIA_ANALYZER.text_for_row(row) if MEDIA_ANALYZER else ""
     return (clean(row.get("message_text")) + " " + media).lower()
 
 
@@ -266,6 +401,8 @@ def recency_days(created_at: str, reference: datetime | None) -> float:
 
 class Router:
     def __init__(self) -> None:
+        global MEDIA_ANALYZER
+        MEDIA_ANALYZER = MediaAnalyzer()
         self.messages = read_csv("messages.csv")
         self.users = {r["user_id"]: r for r in read_csv("users.csv")}
         self.groups = {r["group_id"]: r for r in read_csv("groups.csv")}

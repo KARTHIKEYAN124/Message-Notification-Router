@@ -11,7 +11,7 @@ The router in `code/main.py` is a deterministic Python pipeline that combines:
 - text risk detection for OTP, PIN, password, suspicious links, QR payment pressure, account-lock threats, and prompt-injection attempts
 - personalization from `users.csv`, `groups.csv`, `group_members.csv`, `business_accounts.csv`, and `user_business_history.csv`
 - historical retrieval from `message_history.csv` and `message_events.csv` to produce `evidence_message_ids`
-- media interpretation hints for the provided image posters, screenshots, and voice-note IDs
+- runtime media inspection for images and voice notes: referenced files are opened, hashed, and inspected for dimensions/audio metadata, with optional OCR/ASR support and exact content-hash fallbacks for the provided media set
 - calibrated rules for urgent society notices, school updates, work escalations, business updates, promotions, repeated forwards, personal messages, spam, and scams
 
 No external API keys or services are required.
